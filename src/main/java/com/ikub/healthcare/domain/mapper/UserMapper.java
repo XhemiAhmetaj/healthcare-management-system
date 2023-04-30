@@ -1,7 +1,7 @@
 package com.ikub.healthcare.domain.mapper;
 
 import com.ikub.healthcare.domain.dto.RoleDTO;
-import com.ikub.healthcare.domain.dto.UserRegistrationDTO;
+import com.ikub.healthcare.domain.dto.UserDTO;
 import com.ikub.healthcare.domain.entity.Role;
 import com.ikub.healthcare.domain.entity.User;
 
@@ -16,8 +16,8 @@ public class UserMapper {
                 .build();
     }
 
-    public static UserRegistrationDTO toDto(User u){
-        return UserRegistrationDTO.builder()
+    public static UserDTO toDto(User u){
+        return UserDTO.builder()
                 .id(u.getId())
                 .name(u.getName())
                 .lastname(u.getLastname())
@@ -30,7 +30,7 @@ public class UserMapper {
                 .build();
     }
 
-    public static User toEntity(UserRegistrationDTO u){
+    public static User toEntity(UserDTO u){
         return User.builder()
                 .name(u.getName())
                 .lastname(u.getLastname())

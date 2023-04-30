@@ -1,6 +1,6 @@
 package com.ikub.healthcare.service.impl;
 
-import com.ikub.healthcare.domain.dto.UserRegistrationDTO;
+import com.ikub.healthcare.domain.dto.UserDTO;
 import com.ikub.healthcare.domain.entity.User;
 import com.ikub.healthcare.domain.entity.enums.Department;
 import com.ikub.healthcare.domain.entity.enums.UserRole;
@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserRegistrationDTO registerUser(UserRegistrationDTO req, String userRole, String userDepartment) {
+    public UserDTO registerUser(UserDTO req, String userRole, String userDepartment) {
         User u = UserMapper.toEntity(req);
         u.setRole(userRole!=null? UserRole.fromValue(userRole):UserRole.PATIENT);
         u.setDepartment(userDepartment!=null?Department.fromValue(userDepartment):Department.NULL);
@@ -64,6 +65,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }catch (Exception e){
             throw new RuntimeException(e.getLocalizedMessage());
         }
+    }
+
+    @Override
+    public User getUserFromToken(Jwt jwt) {
+        String sub = (String) jwt.getClaims().get("sub");
+        return userRepository.findByEmail(sub).get();
     }
 
 

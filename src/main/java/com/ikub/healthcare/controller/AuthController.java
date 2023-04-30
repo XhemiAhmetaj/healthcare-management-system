@@ -7,7 +7,7 @@ import javax.validation.Valid;
 
 import com.ikub.healthcare.domain.auth.AuthRequest;
 import com.ikub.healthcare.domain.auth.TokenDTO;
-import com.ikub.healthcare.domain.dto.UserRegistrationDTO;
+import com.ikub.healthcare.domain.dto.UserDTO;
 import com.ikub.healthcare.domain.entity.User;
 import com.ikub.healthcare.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -72,7 +72,7 @@ public class AuthController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<UserRegistrationDTO> registerUser(@RequestBody @Valid UserRegistrationDTO u){
+  public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserDTO u){
     return ResponseEntity.ok(userService.registerUser(u,null,null));
   }
 

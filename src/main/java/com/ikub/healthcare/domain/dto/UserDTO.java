@@ -1,7 +1,7 @@
 package com.ikub.healthcare.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserRegistrationDTO {
+public class UserDTO {
     private Integer id;
     @NotNull(message = "Name is required")
     private String name;

@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -41,14 +42,13 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String personalNumber;
     @Enumerated(EnumType.STRING)
-//    @ManyToOne
-//    @JoinColumn(name="department_id", referencedColumnName = "id")
     private Department department;
     @Enumerated(EnumType.STRING)
     private UserRole role;
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-//    private Collection<Role> roles;
+    @OneToMany(mappedBy = "patient_id")
+    private List<Appointment> patient_appointments;
+    @OneToMany(mappedBy = "doctor_id")
+    private List<Appointment> doctor_appointments;
     @CreatedDate
     private LocalDateTime created_at;
     private LocalDateTime modified_at;

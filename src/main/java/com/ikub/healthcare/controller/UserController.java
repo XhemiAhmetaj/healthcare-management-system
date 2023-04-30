@@ -1,6 +1,6 @@
 package com.ikub.healthcare.controller;
 
-import com.ikub.healthcare.domain.dto.UserRegistrationDTO;
+import com.ikub.healthcare.domain.dto.UserDTO;
 import com.ikub.healthcare.domain.entity.User;
 import com.ikub.healthcare.domain.mapper.UserMapper;
 import com.ikub.healthcare.service.UserService;
@@ -23,14 +23,14 @@ public class UserController {
 
     @RolesAllowed("ADMIN")
     @PostMapping("/admin/{userRole}/{department}")
-    public ResponseEntity<UserRegistrationDTO> registerUser(@RequestBody @Valid UserRegistrationDTO req, @PathVariable String userRole, @PathVariable String department){
-        UserRegistrationDTO dto = userService.registerUser(req, userRole, department);
+    public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserDTO req, @PathVariable String userRole, @PathVariable String department){
+        UserDTO dto = userService.registerUser(req, userRole, department);
         return ResponseEntity.ok(dto);
 
     }
     @RolesAllowed("ADMIN")
     @GetMapping("/admin/{id}")
-    public ResponseEntity<UserRegistrationDTO> findUser(@PathVariable Integer id){
+    public ResponseEntity<UserDTO> findUser(@PathVariable Integer id){
         User u = userService.findById(id);
         return ResponseEntity.ok(UserMapper.toDto(u));
     }
