@@ -22,10 +22,10 @@ public class Appointment {
     private Integer id;
     @ManyToOne()
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User patient_id;
+    private User patient;
     @ManyToOne()
     @JoinColumn(name = "user_name", referencedColumnName = "name")
-    private User doctor_id;
+    private User doctor;
     private String description;
-    private LocalDateTime appointment;
+    private LocalDateTime scheduledDate;
 }

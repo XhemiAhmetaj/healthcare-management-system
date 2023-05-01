@@ -15,5 +15,5 @@ public class AppointmentDTO {
 
     private Integer id;
     private String description;
-    private LocalDateTime appointment_datetime;
+    private LocalDateTime scheduledDate;
 }

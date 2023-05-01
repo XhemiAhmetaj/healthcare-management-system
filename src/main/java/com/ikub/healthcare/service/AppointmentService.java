@@ -11,6 +11,6 @@ public interface AppointmentService {
 
     AppointmentDTO findAppointmentById(Integer id);
     List<AppointmentDTO> findAllAppointment();
-    List<AppointmentDTO> findAppointmentByPatientName(User user);
+    List<AppointmentDTO> findAppointmentByPatientName(String name);
     AppointmentDTO addAppointment(Jwt jwt, AppointmentDTO appointmentDTO);
 }

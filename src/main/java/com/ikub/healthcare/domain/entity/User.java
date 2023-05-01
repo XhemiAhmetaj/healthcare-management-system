@@ -45,9 +45,9 @@ public class User implements UserDetails {
     private Department department;
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    @OneToMany(mappedBy = "patient_id")
+    @OneToMany(mappedBy = "patient")
     private List<Appointment> patient_appointments;
-    @OneToMany(mappedBy = "doctor_id")
+    @OneToMany(mappedBy = "doctor")
     private List<Appointment> doctor_appointments;
     @CreatedDate
     private LocalDateTime created_at;

@@ -10,7 +10,7 @@ public class AppointmentMapper {
         return AppointmentDTO.builder()
                 .id(app.getId())
                 .description(app.getDescription())
-                .appointment_datetime(app.getAppointment())
+                .scheduledDate(app.getScheduledDate())
                 .build();
     }
 

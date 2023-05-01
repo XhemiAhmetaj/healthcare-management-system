@@ -34,8 +34,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentDTO> findAppointmentByPatientName(User user) {
-        return appointmentRepository.findAllByPatient_id(user.getId())
+    public List<AppointmentDTO> findAppointmentByPatientName(String name) {
+        return appointmentRepository.findAllByPatient_Name(name)
                 .stream().map(AppointmentMapper::toDto).collect(Collectors.toList());
     }
 
