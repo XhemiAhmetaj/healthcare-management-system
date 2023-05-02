@@ -1,5 +1,6 @@
 package com.ikub.healthcare.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Entity
@@ -21,11 +23,12 @@ public class Appointment {
     @GeneratedValue
     private Integer id;
     @ManyToOne()
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User patient;
+    @JoinColumn(name = "patient_id", referencedColumnName = "id")
+    private User userPatient;
     @ManyToOne()
-    @JoinColumn(name = "user_name", referencedColumnName = "name")
-    private User doctor;
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
+    private User userDoctor;
     private String description;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime scheduledDate;
 }

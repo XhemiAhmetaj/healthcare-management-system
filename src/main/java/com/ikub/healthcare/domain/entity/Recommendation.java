@@ -4,21 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "prescriptions")
+@Table(name = "recommendations")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class Prescription {
+public class Recommendation {
     @Id
     @GeneratedValue
     private Integer id;
     private String description;
-//    private User writtenBy;
+//    private User recommendedBy;
 //    private Appointment appointmentId;
 }

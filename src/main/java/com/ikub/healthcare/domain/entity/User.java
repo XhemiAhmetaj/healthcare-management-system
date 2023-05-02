@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -45,10 +46,15 @@ public class User implements UserDetails {
     private Department department;
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    @OneToMany(mappedBy = "patient")
-    private List<Appointment> patient_appointments;
-    @OneToMany(mappedBy = "doctor")
-    private List<Appointment> doctor_appointments;
+    @ManyToOne
+    @JoinColumn(name = "family_doctor", referencedColumnName = "id")
+    private User familyDoctor;
+    @OneToMany(mappedBy = "familyDoctor", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<User> patients = new ArrayList<>();
+    @OneToMany(mappedBy = "userPatient")
+    private List<Appointment> patient_appointments = new ArrayList<>();
+    @OneToMany(mappedBy = "userDoctor")
+    private List<Appointment> doctor_appointments= new ArrayList<>();
     @CreatedDate
     private LocalDateTime created_at;
     private LocalDateTime modified_at;

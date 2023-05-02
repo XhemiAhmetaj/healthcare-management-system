@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -54,7 +55,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         u.setRole(userRole!=null? UserRole.fromValue(userRole):UserRole.PATIENT);
         u.setDepartment(userDepartment!=null?Department.fromValue(userDepartment):Department.NULL);
         u.setPassword(passwordEncoder.encode(req.getPassword()));
+        if(u.getRole()==UserRole.PATIENT){
+            u.setFamilyDoctor(userRepository.findAllByRoleAndAddressEquals(UserRole.FAMILY_DOCTOR, u.getAddress()));
+        }else
+            u.setFamilyDoctor(null);
         u = userRepository.save(u);
+
         return UserMapper.toDto(u);
     }
 
@@ -71,6 +77,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User getUserFromToken(Jwt jwt) {
         String sub = (String) jwt.getClaims().get("sub");
         return userRepository.findByEmail(sub).get();
+    }
+
+    @Override
+    public List<User> findAllDoctors() {
+        return userRepository.findUsersByRole(UserRole.DOCTOR);
     }
 
 

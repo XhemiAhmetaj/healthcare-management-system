@@ -14,4 +14,6 @@ public interface UserService {
     void deleteUser(Integer id);
     User getUserFromToken(Jwt jwt);
 
+    List<User> findAllDoctors();
+
 }

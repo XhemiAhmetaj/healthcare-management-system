@@ -3,6 +3,8 @@ package com.ikub.healthcare.service.impl;
 import com.ikub.healthcare.domain.dto.AppointmentDTO;
 import com.ikub.healthcare.domain.entity.Appointment;
 import com.ikub.healthcare.domain.entity.User;
+import com.ikub.healthcare.domain.entity.enums.Department;
+import com.ikub.healthcare.domain.entity.enums.UserRole;
 import com.ikub.healthcare.domain.mapper.AppointmentMapper;
 import com.ikub.healthcare.repository.AppointmentRepository;
 import com.ikub.healthcare.repository.UserRepository;
@@ -35,7 +37,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<AppointmentDTO> findAppointmentByPatientName(String name) {
-        return appointmentRepository.findAllByPatient_Name(name)
+        return appointmentRepository.findAllByUserPatientName(name)
                 .stream().map(AppointmentMapper::toDto).collect(Collectors.toList());
     }
 
@@ -43,7 +45,17 @@ public class AppointmentServiceImpl implements AppointmentService {
     public AppointmentDTO addAppointment(Jwt jwt, AppointmentDTO appointmentDTO) {
         User u = userService.getUserFromToken(jwt);
         Appointment a = appointmentRepository.save(new Appointment());
-        return null;
+        a.setDescription(appointmentDTO.getDescription());
+        a.setScheduledDate(appointmentDTO.getScheduledDate());
+        if(u.getRole()!= UserRole.PATIENT){
+            a.setUserDoctor(u);
+            a.setUserPatient(u);
+        }else {
+            a.setUserPatient(u);
+            a.setUserDoctor(u.getFamilyDoctor());
+        }
+        a = appointmentRepository.save(a);
+        return AppointmentMapper.toDto(a);
     }
 
 }
