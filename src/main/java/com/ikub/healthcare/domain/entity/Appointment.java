@@ -34,4 +34,8 @@ public class Appointment {
     private String description;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime scheduledDate;
+
+    @OneToOne()
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    private User createdBy;
 }

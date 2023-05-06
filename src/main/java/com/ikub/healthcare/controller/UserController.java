@@ -56,10 +56,10 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-//    @RolesAllowed("ADMIN")
-//    @GetMapping("/admin/{userRole}")
-//    public ResponseEntity<List<UserDTO>> returnUserByRole(@PathVariable String userRole){
-//        return ResponseEntity.ok(userService.findUserByRole(userRole));
-//    }
+    @RolesAllowed("ADMIN")
+    @GetMapping("/admin/role/{userRole}")
+    public ResponseEntity<List<UserDTO>> returnUserByRole(@PathVariable String userRole){
+        return ResponseEntity.ok(userService.findUserByRole(userRole));
+    }
 
 }

@@ -11,11 +11,9 @@ public class AppointmentMapper {
                 .id(app.getId())
                 .description(app.getDescription())
                 .scheduledDate(app.getScheduledDate())
+                .doctorId(app.getUserDoctor().getId()!=null?app.getUserDoctor().getId():null)
+                .patientId(app.getUserPatient().getId()!=null?app.getUserPatient().getId():null)
                 .build();
     }
-
-//    public static Appointment createAppointment(User u, Appointment a){
-//        a.setAppointment(u.);
-//    }
-
+    
 }

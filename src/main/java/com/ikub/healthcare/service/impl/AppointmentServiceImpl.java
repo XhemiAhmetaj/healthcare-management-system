@@ -5,6 +5,7 @@ import com.ikub.healthcare.domain.entity.Appointment;
 import com.ikub.healthcare.domain.entity.User;
 import com.ikub.healthcare.domain.entity.enums.Department;
 import com.ikub.healthcare.domain.entity.enums.UserRole;
+import com.ikub.healthcare.domain.exception.ResourceNotFountException;
 import com.ikub.healthcare.domain.mapper.AppointmentMapper;
 import com.ikub.healthcare.repository.AppointmentRepository;
 import com.ikub.healthcare.repository.UserRepository;
@@ -27,7 +28,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public AppointmentDTO findAppointmentById(Integer id) {
-        return null;
+        return appointmentRepository.findById(id).map(appointment -> AppointmentMapper.toDto(appointment)).orElseThrow(()->new ResourceNotFountException("Appointment not found"));
     }
 
     @Override
@@ -47,9 +48,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment a = appointmentRepository.save(new Appointment());
         a.setDescription(appointmentDTO.getDescription());
         a.setScheduledDate(appointmentDTO.getScheduledDate());
+        a.setCreatedBy(u);
+        a = appointmentRepository.save(a);
         if(u.getRole()!= UserRole.PATIENT){
-            a.setUserDoctor(u);
-            a.setUserPatient(u);
+            a.setUserDoctor(userService.findById(appointmentDTO.getDoctorId()));
+            a.setUserPatient(userService.findById(appointmentDTO.getPatientId()));
         }else {
             a.setUserPatient(u);
             a.setUserDoctor(u.getFamilyDoctor());
@@ -59,8 +62,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> findAllAppointmentByUserPatientId(Integer id) {
-        return appointmentRepository.findAllByUserPatient_Id(id);
+    public List<AppointmentDTO> findAllAppointmentByUserPatientId(Integer id) {
+        return appointmentRepository.findAllByUserPatient_Id(id).stream().map(AppointmentMapper::toDto).collect(Collectors.toList());
     }
 
 }

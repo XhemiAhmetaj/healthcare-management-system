@@ -16,4 +16,6 @@ public class AppointmentDTO {
     private Integer id;
     private String description;
     private LocalDateTime scheduledDate;
+    private Integer patientId;
+    private Integer doctorId;
 }

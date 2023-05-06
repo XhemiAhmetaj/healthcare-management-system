@@ -89,12 +89,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 //        return userRepository.findUsersByRole(UserRole.FAMILY_DOCTOR);
 //    }
 
-//    @Override
-//    public List<UserDTO> findUserByRole(String role) {
-//        return userRepository.findUsersByRole(UserRole.fromValue(role)).stream()
-//                .map(u->UserMapper.toDto(u))
-//                .collect(Collectors.toList());
-//    }
+    @Override
+    public List<UserDTO> findUserByRole(String role) {
+        return userRepository.findUsersByRole(UserRole.fromValue(role)).stream()
+                .map(u->UserMapper.toDto(u))
+                .collect(Collectors.toList());
+    }
 
 
 }

@@ -17,6 +17,6 @@ public interface UserService {
 //    List<User> findAllDoctors();
 //    List<User> findAllFamilyDoctors();
 
-//    List<UserDTO> findUserByRole(String role);
+    List<UserDTO> findUserByRole(String role);
 
 }
