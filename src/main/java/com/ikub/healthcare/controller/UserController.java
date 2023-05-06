@@ -36,14 +36,30 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> returnAllUsers(){
+    public ResponseEntity<List<UserDTO>> returnAllUsers(){
         return ResponseEntity.ok(userService.findAllUsers());
     }
+//    @RolesAllowed("ADMIN")
+//    @GetMapping("/admin/doctors")
+//    public ResponseEntity<List<User>> returnAllDoctors(){
+//        return ResponseEntity.ok(userService.findAllDoctors());
+//    }
+//    @RolesAllowed("ADMIN")
+//    @GetMapping("/admin/family-doctors")
+//    public ResponseEntity<List<User>> returnFamilyDoctors(){
+//        return ResponseEntity.ok(userService.findAllFamilyDoctors());
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id){
         userService.deleteUser(id);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+//    @RolesAllowed("ADMIN")
+//    @GetMapping("/admin/{userRole}")
+//    public ResponseEntity<List<UserDTO>> returnUserByRole(@PathVariable String userRole){
+//        return ResponseEntity.ok(userService.findUserByRole(userRole));
+//    }
 
 }

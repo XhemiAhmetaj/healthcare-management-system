@@ -9,11 +9,14 @@ import java.util.List;
 public interface UserService {
 
     User findById(Integer id);
-    List<User> findAllUsers();
+    List<UserDTO> findAllUsers();
     UserDTO registerUser(UserDTO req, String userRole, String userDepartment);
     void deleteUser(Integer id);
     User getUserFromToken(Jwt jwt);
 
-    List<User> findAllDoctors();
+//    List<User> findAllDoctors();
+//    List<User> findAllFamilyDoctors();
+
+//    List<UserDTO> findUserByRole(String role);
 
 }

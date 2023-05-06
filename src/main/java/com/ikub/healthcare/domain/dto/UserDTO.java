@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+
+import com.ikub.healthcare.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -34,6 +37,5 @@ public class UserDTO {
     @NotNull(message = "Birth date is required")
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate birthday;
-
 
 }

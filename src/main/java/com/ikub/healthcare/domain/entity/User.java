@@ -2,12 +2,10 @@ package com.ikub.healthcare.domain.entity;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ikub.healthcare.domain.entity.enums.Department;
 import com.ikub.healthcare.domain.entity.enums.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
@@ -46,15 +44,20 @@ public class User implements UserDetails {
     private Department department;
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    @ManyToOne
+    @ToString.Exclude
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family_doctor", referencedColumnName = "id")
     private User familyDoctor;
+    @ToString.Exclude
     @OneToMany(mappedBy = "familyDoctor", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<User> patients = new ArrayList<>();
+    private List<User> patients;
+    @ToString.Exclude
     @OneToMany(mappedBy = "userPatient")
-    private List<Appointment> patient_appointments = new ArrayList<>();
+    private List<Appointment> patient_appointments;
+    @ToString.Exclude
     @OneToMany(mappedBy = "userDoctor")
-    private List<Appointment> doctor_appointments= new ArrayList<>();
+    private List<Appointment> doctor_appointments;
     @CreatedDate
     private LocalDateTime created_at;
     private LocalDateTime modified_at;

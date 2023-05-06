@@ -32,12 +32,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public List<AppointmentDTO> findAllAppointment() {
-        return appointmentRepository.findAll().stream().map(AppointmentMapper::toDto).collect(Collectors.toList());
+        return appointmentRepository.findAll().stream().map(a-> AppointmentMapper.toDto(a)).collect(Collectors.toList());
     }
 
     @Override
     public List<AppointmentDTO> findAppointmentByPatientName(String name) {
-        return appointmentRepository.findAllByUserPatientName(name)
+        return appointmentRepository.findAllByUserPatient_Name(name)
                 .stream().map(AppointmentMapper::toDto).collect(Collectors.toList());
     }
 
@@ -56,6 +56,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         a = appointmentRepository.save(a);
         return AppointmentMapper.toDto(a);
+    }
+
+    @Override
+    public List<Appointment> findAllAppointmentByUserPatientId(Integer id) {
+        return appointmentRepository.findAllByUserPatient_Id(id);
     }
 
 }

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -45,8 +46,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> findAllUsers() {
+        return userRepository.findAll().stream().map(u->UserMapper.toDto(u)).collect(Collectors.toList());
     }
 
     @Override
@@ -79,10 +80,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findByEmail(sub).get();
     }
 
-    @Override
-    public List<User> findAllDoctors() {
-        return userRepository.findUsersByRole(UserRole.DOCTOR);
-    }
+//    @Override
+//    public List<User> findAllDoctors() {
+//        return userRepository.findUsersByRole(UserRole.DOCTOR);
+//    }
+//    @Override
+//    public List<User> findAllFamilyDoctors(){
+//        return userRepository.findUsersByRole(UserRole.FAMILY_DOCTOR);
+//    }
+
+//    @Override
+//    public List<UserDTO> findUserByRole(String role) {
+//        return userRepository.findUsersByRole(UserRole.fromValue(role)).stream()
+//                .map(u->UserMapper.toDto(u))
+//                .collect(Collectors.toList());
+//    }
 
 
 }

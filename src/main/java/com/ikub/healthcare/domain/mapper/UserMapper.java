@@ -6,6 +6,7 @@ import com.ikub.healthcare.domain.entity.Role;
 import com.ikub.healthcare.domain.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 public class UserMapper {
 
