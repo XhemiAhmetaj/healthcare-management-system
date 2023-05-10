@@ -25,23 +25,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final UserService userService;
-    private final UserRepository userRepository;
-
-    @Override
-    public AppointmentDTO findAppointmentById(Integer id) {
-        return appointmentRepository.findById(id).map(appointment -> AppointmentMapper.toDto(appointment)).orElseThrow(()->new ResourceNotFountException("Appointment not found"));
-    }
-
-    @Override
-    public List<AppointmentDTO> findAllAppointment() {
-        return appointmentRepository.findAll().stream().map(a-> AppointmentMapper.toDto(a)).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<AppointmentDTO> findAppointmentByPatientName(String name) {
-        return appointmentRepository.findAllByUserPatient_Name(name)
-                .stream().map(AppointmentMapper::toDto).collect(Collectors.toList());
-    }
 
     @Override
     public AppointmentDTO addAppointment(Jwt jwt, AppointmentDTO appointmentDTO) {
@@ -61,6 +44,22 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         a = appointmentRepository.save(a);
         return AppointmentMapper.toDto(a);
+    }
+
+    @Override
+    public AppointmentDTO findAppointmentById(Integer id) {
+        return appointmentRepository.findById(id).map(appointment -> AppointmentMapper.toDto(appointment)).orElseThrow(()->new ResourceNotFountException("Appointment not found"));
+    }
+
+    @Override
+    public List<AppointmentDTO> findAllAppointment() {
+        return appointmentRepository.findAll().stream().map(a-> AppointmentMapper.toDto(a)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<AppointmentDTO> findAppointmentByPatientName(String name) {
+        return appointmentRepository.findAllByUserPatient_Name(name)
+                .stream().map(AppointmentMapper::toDto).collect(Collectors.toList());
     }
 
     @Override

@@ -17,6 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class RecommendationServiceImpl implements RecommendationService {
@@ -35,5 +38,25 @@ public class RecommendationServiceImpl implements RecommendationService {
                 .format("Appointment not found"))));
         r = recommendationRepository.save(r);
         return RecommendationMapper.toDTO(r);
+    }
+
+    @Override
+    public List<RecommendationDTO> findAllRecommendations() {
+        return recommendationRepository.findAll().stream().map(r-> RecommendationMapper.toDTO(r)).collect(Collectors.toList());
+    }
+
+    @Override
+    public RecommendationDTO findRecommendationById(Integer id) {
+        return recommendationRepository.findById(id).map(r->RecommendationMapper.toDTO(r)).orElseThrow(()->new ResourceNotFountException("Recommendation not found!"));
+    }
+
+    @Override
+    public List<RecommendationDTO> findRecommendationByPatientName(String name) {
+        return recommendationRepository.findRecommendationsByAppointment_UserPatientName(name).stream().map(r->RecommendationMapper.toDTO(r)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RecommendationDTO> findRecommendationByDoctorId(Integer id) {
+        return recommendationRepository.findRecommendationsByRecommendedBy_Id(id).stream().map(r->RecommendationMapper.toDTO(r)).collect(Collectors.toList());
     }
 }
