@@ -1,14 +1,9 @@
 package com.ikub.healthcare.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "recommendations")
@@ -21,6 +16,13 @@ public class Recommendation {
     @GeneratedValue
     private Integer id;
     private String description;
-//    private User recommendedBy;
-//    private Appointment appointmentId;
+    @ToString.Exclude
+//    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recommended_by", referencedColumnName = "id")
+    private User recommendedBy;
+//    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "appointment_id", referencedColumnName = "id")
+    private Appointment appointment;
 }

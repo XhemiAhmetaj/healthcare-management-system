@@ -2,6 +2,7 @@ package com.ikub.healthcare.service.impl;
 
 import com.ikub.healthcare.domain.dto.AppointmentDTO;
 import com.ikub.healthcare.domain.entity.Appointment;
+import com.ikub.healthcare.domain.entity.History;
 import com.ikub.healthcare.domain.entity.User;
 import com.ikub.healthcare.domain.entity.enums.Department;
 import com.ikub.healthcare.domain.entity.enums.UserRole;
@@ -49,10 +50,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         a.setDescription(appointmentDTO.getDescription());
         a.setScheduledDate(appointmentDTO.getScheduledDate());
         a.setCreatedBy(u);
-        a = appointmentRepository.save(a);
         if(u.getRole()!= UserRole.PATIENT){
-            a.setUserDoctor(userService.findById(appointmentDTO.getDoctorId()));
-            a.setUserPatient(userService.findById(appointmentDTO.getPatientId()));
+            a.setUserDoctor(userService.findById(appointmentDTO.getDoctorDTO().getId()));
+            a.setUserPatient(userService.findById(appointmentDTO.getPatientDTO().getId()));
         }else {
             a.setUserPatient(u);
             a.setUserDoctor(u.getFamilyDoctor());
@@ -65,5 +65,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<AppointmentDTO> findAllAppointmentByUserPatientId(Integer id) {
         return appointmentRepository.findAllByUserPatient_Id(id).stream().map(AppointmentMapper::toDto).collect(Collectors.toList());
     }
+
+    @Override
+    public List<AppointmentDTO> findAllAppointmentsByDoctorId(Integer id) {
+        return appointmentRepository.findAllByUserDoctor_Id(id).stream().map(AppointmentMapper::toDto).collect(Collectors.toList());
+    }
+
 
 }

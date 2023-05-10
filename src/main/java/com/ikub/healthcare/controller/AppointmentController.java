@@ -28,22 +28,28 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentDTO);
     }
 
-    @RolesAllowed("ADMIN")
+    @RolesAllowed("RECEPTIONIST")
     @GetMapping("/patient/id/{id}")
     public ResponseEntity<List<AppointmentDTO>> findAllAppointmentsByPatientId(@PathVariable Integer id){
         return ResponseEntity.ok(appointmentService.findAllAppointmentByUserPatientId(id));
     }
 
-    @RolesAllowed("ADMIN")
+    @RolesAllowed({"ADMIN", "RECEPTIONIST"})
     @GetMapping("/patient/name/{name}")
     public ResponseEntity<List<AppointmentDTO>> findAppointmentsByPatientName(@PathVariable String name){
         return ResponseEntity.ok(appointmentService.findAppointmentByPatientName(name));
     }
 
-    @RolesAllowed("ADMIN")
+    @RolesAllowed({"ADMIN","RECEPTIONIST"})
     @GetMapping("/{id}")
     public ResponseEntity<AppointmentDTO> findAppointmentById(@PathVariable Integer id){
         return ResponseEntity.ok(appointmentService.findAppointmentById(id));
+    }
+
+    @RolesAllowed({"ADMIN","RECEPTIONIST","DOCTOR"})
+    @GetMapping("/doctor/id/{id}")
+    public ResponseEntity<List<AppointmentDTO>> findAppointmentByDoctorId(@PathVariable Integer id){
+        return ResponseEntity.ok(appointmentService.findAllAppointmentsByDoctorId(id));
     }
 
 

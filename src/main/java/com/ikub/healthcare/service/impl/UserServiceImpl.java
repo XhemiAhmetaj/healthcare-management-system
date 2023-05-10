@@ -28,7 +28,6 @@ import static java.lang.String.format;
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserRoleRepository roleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -79,15 +78,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         String sub = (String) jwt.getClaims().get("sub");
         return userRepository.findByEmail(sub).get();
     }
-
-//    @Override
-//    public List<User> findAllDoctors() {
-//        return userRepository.findUsersByRole(UserRole.DOCTOR);
-//    }
-//    @Override
-//    public List<User> findAllFamilyDoctors(){
-//        return userRepository.findUsersByRole(UserRole.FAMILY_DOCTOR);
-//    }
 
     @Override
     public List<UserDTO> findUserByRole(String role) {

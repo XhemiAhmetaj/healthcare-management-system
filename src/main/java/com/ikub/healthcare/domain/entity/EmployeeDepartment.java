@@ -19,6 +19,4 @@ public class EmployeeDepartment {
     @GeneratedValue
     private Integer id;
     private String name;
-//    @OneToMany(mappedBy = "user")
-//    private List<User> user;
 }

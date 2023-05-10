@@ -28,14 +28,14 @@ public class UserMapper {
         return User.builder()
                 .name(u.getName())
                 .lastname(u.getLastname())
-//                .personalNumber(u.getPersonalNumber())
-//                .birthday(u.getBirthday())
-//                .address(u.getAddress())
+                .personalNumber(u.getPersonalNumber())
+                .birthday(u.getBirthday())
+                .address(u.getAddress())
                 .phoneNumber(u.getPhoneNumber())
                 .email(u.getEmail())
-//                .password(u.getPassword())
-//                .created_at(LocalDateTime.now())
-//                .modified_at(LocalDateTime.now())
+                .password(u.getPassword())
+                .created_at(LocalDateTime.now())
+                .modified_at(LocalDateTime.now())
                 .build();
     }
 }
