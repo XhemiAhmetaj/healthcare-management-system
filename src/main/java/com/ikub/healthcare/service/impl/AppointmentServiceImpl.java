@@ -53,10 +53,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         if(u.getRole()!= UserRole.PATIENT){
             a.setUserDoctor(userService.findById(appointmentDTO.getDoctorDTO().getId()));
             a.setUserPatient(userService.findById(appointmentDTO.getPatientDTO().getId()));
+            a.setParent(appointmentRepository.findById(appointmentDTO.getParentAppointment().getId()).orElseThrow(()->new ResourceNotFountException("Appointment not found")));
         }else {
             a.setUserPatient(u);
             a.setUserDoctor(u.getFamilyDoctor());
         }
+
         a = appointmentRepository.save(a);
         return AppointmentMapper.toDto(a);
     }

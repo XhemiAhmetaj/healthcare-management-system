@@ -18,4 +18,5 @@ public class AppointmentDTO {
     private LocalDateTime scheduledDate;
     private UserDTO patientDTO;
     private UserDTO doctorDTO;
+    private AppointmentDTO parentAppointment;
 }

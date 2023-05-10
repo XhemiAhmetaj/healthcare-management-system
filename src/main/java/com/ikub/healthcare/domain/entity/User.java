@@ -62,6 +62,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "userDoctor")
     private List<Appointment> doctor_appointments;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "recommendedBy")
     private List<Recommendation> recommendations;
     @CreatedDate

@@ -21,27 +21,30 @@ public class Appointment {
     @Id
     @GeneratedValue
     private Integer id;
-//    @JsonIgnore
+    private String description;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", referencedColumnName = "id")
     private User userPatient;
-//    @JsonIgnore
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private User userDoctor;
-    private String description;
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "parent_id",referencedColumnName = "id")
+    private Appointment parent;
+
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Appointment> subAppointments;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime scheduledDate;
     @ToString.Exclude
-//    @JsonIgnore
     @OneToOne()
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     private User createdBy;
 
     @ToString.Exclude
-//    @JsonIgnore
     @OneToMany(mappedBy = "appointment")
     private List<Recommendation> recommendation;
 }

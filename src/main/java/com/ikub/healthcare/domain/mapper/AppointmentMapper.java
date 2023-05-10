@@ -13,6 +13,7 @@ public class AppointmentMapper {
                 .scheduledDate(app.getScheduledDate())
                 .doctorDTO(app.getUserDoctor()!=null?UserMapper.toDto(app.getUserDoctor()):null)
                 .patientDTO(app.getUserPatient()!=null?UserMapper.toDto(app.getUserPatient()):null)
+                .parentAppointment(app.getParent()!=null?AppointmentMapper.toDto(app.getParent()):null)
 
 //                .doctorId(app.getUserDoctor().getId()!=null?app.getUserDoctor().getId():null)
 //                .patientId(app.getUserPatient().getId()!=null?app.getUserPatient().getId():null)
