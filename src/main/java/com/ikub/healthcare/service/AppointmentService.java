@@ -12,7 +12,7 @@ public interface AppointmentService {
     AppointmentDTO findAppointmentById(Integer id);
     List<AppointmentDTO> findAllAppointment();
     List<AppointmentDTO> findAppointmentByPatientName(String name);
-    AppointmentDTO addAppointment(Jwt jwt, AppointmentDTO appointmentDTO);
+    AppointmentDTO addAppointment(Jwt jwt, Integer id, AppointmentDTO appointmentDTO);
     List<AppointmentDTO> findAllAppointmentByUserPatientId(Integer id);
 
     List<AppointmentDTO> findAllAppointmentsByDoctorId(Integer id);

@@ -44,4 +44,9 @@ public class Appointment {
     @ToString.Exclude
     @OneToMany(mappedBy = "appointment")
     private List<Recommendation> recommendation;
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "appointmentDiag")
+    private Diagnosis diagnosis;
+
 }

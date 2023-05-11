@@ -16,4 +16,13 @@ public class AppointmentMapper {
                 .build();
     }
 
+    public static Appointment toEntity(AppointmentDTO dto){
+        return Appointment.builder()
+                .description(dto.getDescription())
+                .userDoctor(dto.getDoctorDTO()!=null?UserMapper.toEntity(dto.getDoctorDTO()):null)
+                .userPatient(dto.getPatientDTO()!=null?UserMapper.toEntity(dto.getPatientDTO()):null)
+                .scheduledDate(dto.getScheduledDate())
+                .build();
+    }
+
 }

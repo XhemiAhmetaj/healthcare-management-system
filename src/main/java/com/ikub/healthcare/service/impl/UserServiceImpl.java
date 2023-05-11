@@ -7,7 +7,7 @@ import com.ikub.healthcare.domain.entity.enums.UserRole;
 import com.ikub.healthcare.domain.exception.ResourceNotFountException;
 import com.ikub.healthcare.domain.mapper.UserMapper;
 import com.ikub.healthcare.repository.UserRepository;
-import com.ikub.healthcare.repository.UserRoleRepository;
+//import com.ikub.healthcare.repository.UserRoleRepository;
 import com.ikub.healthcare.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

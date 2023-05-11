@@ -1,7 +1,9 @@
 package com.ikub.healthcare.controller;
 
 import com.ikub.healthcare.domain.dto.AppointmentDTO;
+import com.ikub.healthcare.domain.dto.DiagnosisDTO;
 import com.ikub.healthcare.service.AppointmentService;
+import com.ikub.healthcare.service.DiagnosisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,11 +18,19 @@ import java.util.List;
 @RequestMapping("/appointments")
 public class AppointmentController {
     private final AppointmentService appointmentService;
+    private final DiagnosisService diagnosisService;
 
     @RolesAllowed({"PATIENT", "RECEPTIONIST","DOCTOR", "FAMILY_DOCTOR"})
     @PostMapping("/add")
-    public ResponseEntity<AppointmentDTO> createAppointment(@AuthenticationPrincipal Jwt jwt, @RequestBody AppointmentDTO app){
-        AppointmentDTO appointmentDTO = appointmentService.addAppointment(jwt, app);
+    public ResponseEntity<AppointmentDTO> createAppointment(@AuthenticationPrincipal Jwt jwt, Integer id, @RequestBody AppointmentDTO app){
+        AppointmentDTO appointmentDTO = appointmentService.addAppointment(jwt,null, app);
+        return ResponseEntity.ok(appointmentDTO);
+    }
+
+    @RolesAllowed({"PATIENT", "RECEPTIONIST","DOCTOR", "FAMILY_DOCTOR"})
+    @PostMapping("{id}/add")
+    public ResponseEntity<AppointmentDTO> addAppointment(@AuthenticationPrincipal Jwt jwt,@PathVariable Integer id, @RequestBody AppointmentDTO app){
+        AppointmentDTO appointmentDTO = appointmentService.addAppointment(jwt,id, app);
         return ResponseEntity.ok(appointmentDTO);
     }
 
@@ -53,6 +63,11 @@ public class AppointmentController {
     @GetMapping()
     public ResponseEntity<List<AppointmentDTO>> findAllAppointments(){
         return ResponseEntity.ok(appointmentService.findAllAppointment());
+    }
+    @RolesAllowed({"RECEPTIONIST","DOCTOR", "FAMILY_DOCTOR"})
+    @PostMapping("/{id}/diagnosis/add")
+    public ResponseEntity<DiagnosisDTO> addDiagnosis(@AuthenticationPrincipal Jwt jwt, @PathVariable Integer id, @RequestBody DiagnosisDTO diagnosis){
+        return ResponseEntity.ok(diagnosisService.addDiagnosis(jwt,id,diagnosis));
     }
 
 }

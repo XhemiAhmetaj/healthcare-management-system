@@ -7,8 +7,10 @@ public class RecommendationMapper {
 
     public static RecommendationDTO toDTO(Recommendation rec){
         return RecommendationDTO.builder()
+                .id(rec.getId())
                 .description(rec.getDescription())
                 .appointment(rec.getAppointment()!=null?AppointmentMapper.toDto(rec.getAppointment()):null)
+                .recommendedBy(UserMapper.toDto(rec.getAppointment().getUserDoctor()))
                 .build();
     }
 }

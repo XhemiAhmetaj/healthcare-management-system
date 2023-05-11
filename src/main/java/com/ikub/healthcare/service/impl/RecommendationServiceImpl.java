@@ -26,8 +26,6 @@ public class RecommendationServiceImpl implements RecommendationService {
     private final UserService userService;
     private final RecommendationRepository recommendationRepository;
     private final AppointmentRepository appointmentRepository;
-    private final AppointmentService appointmentService;
-
     @Override
     public RecommendationDTO addRecommendation(Jwt jwt, RecommendationDTO recommendationDTO) {
         User u = userService.getUserFromToken(jwt);
