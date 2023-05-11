@@ -27,12 +27,12 @@ public class RecommendationServiceImpl implements RecommendationService {
     private final RecommendationRepository recommendationRepository;
     private final AppointmentRepository appointmentRepository;
     @Override
-    public RecommendationDTO addRecommendation(Jwt jwt, RecommendationDTO recommendationDTO) {
+    public RecommendationDTO addRecommendation(Jwt jwt, Integer id, RecommendationDTO recommendationDTO) {
         User u = userService.getUserFromToken(jwt);
         Recommendation r = recommendationRepository.save(new Recommendation());
         r.setDescription(recommendationDTO.getDescription());
         r.setRecommendedBy(u);
-        r.setAppointment(appointmentRepository.findById(recommendationDTO.getAppointment().getId()).orElseThrow(()-> new ResourceNotFountException(String
+        r.setAppointment(appointmentRepository.findById(id).orElseThrow(()-> new ResourceNotFountException(String
                 .format("Appointment not found"))));
         r = recommendationRepository.save(r);
         return RecommendationMapper.toDTO(r);

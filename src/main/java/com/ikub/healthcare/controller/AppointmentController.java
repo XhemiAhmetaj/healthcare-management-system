@@ -2,8 +2,10 @@ package com.ikub.healthcare.controller;
 
 import com.ikub.healthcare.domain.dto.AppointmentDTO;
 import com.ikub.healthcare.domain.dto.DiagnosisDTO;
+import com.ikub.healthcare.domain.dto.RecommendationDTO;
 import com.ikub.healthcare.service.AppointmentService;
 import com.ikub.healthcare.service.DiagnosisService;
+import com.ikub.healthcare.service.RecommendationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequestMapping("/appointments")
 public class AppointmentController {
     private final AppointmentService appointmentService;
+    private final RecommendationService recommendationService;
     private final DiagnosisService diagnosisService;
 
     @RolesAllowed({"PATIENT", "RECEPTIONIST","DOCTOR", "FAMILY_DOCTOR"})
@@ -63,6 +66,13 @@ public class AppointmentController {
     @GetMapping()
     public ResponseEntity<List<AppointmentDTO>> findAllAppointments(){
         return ResponseEntity.ok(appointmentService.findAllAppointment());
+    }
+
+    @RolesAllowed({"DOCTOR", "FAMILY_DOCTOR" })
+    @PostMapping("{id}/recommendation/add")
+    public ResponseEntity<RecommendationDTO> addRecommendation(@AuthenticationPrincipal Jwt jwt,@PathVariable Integer id, @RequestBody RecommendationDTO rec){
+        RecommendationDTO recommendation = recommendationService.addRecommendation(jwt,id, rec);
+        return ResponseEntity.ok(recommendation);
     }
     @RolesAllowed({"RECEPTIONIST","DOCTOR", "FAMILY_DOCTOR"})
     @PostMapping("/{id}/diagnosis/add")

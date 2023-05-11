@@ -10,7 +10,7 @@ public class RecommendationMapper {
                 .id(rec.getId())
                 .description(rec.getDescription())
                 .appointment(rec.getAppointment()!=null?AppointmentMapper.toDto(rec.getAppointment()):null)
-                .recommendedBy(UserMapper.toDto(rec.getAppointment().getUserDoctor()))
+                .recommendedBy(UserMapper.toDto(rec.getRecommendedBy()))
                 .build();
     }
 }

@@ -22,7 +22,7 @@ public class Recommendation {
     @JoinColumn(name = "recommended_by", referencedColumnName = "id")
     private User recommendedBy;
 //    @ToString.Exclude
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "appointment_id", referencedColumnName = "id")
     private Appointment appointment;
 }

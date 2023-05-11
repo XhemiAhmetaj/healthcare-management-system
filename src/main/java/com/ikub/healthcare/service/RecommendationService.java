@@ -6,7 +6,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import java.util.List;
 
 public interface RecommendationService {
-    RecommendationDTO addRecommendation(Jwt jwt, RecommendationDTO recommendationDTO);
+    RecommendationDTO addRecommendation(Jwt jwt, Integer id, RecommendationDTO recommendationDTO);
     List<RecommendationDTO> findAllRecommendations();
     RecommendationDTO findRecommendationById(Integer id);
     List<RecommendationDTO> findRecommendationByPatientName(String name);

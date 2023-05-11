@@ -22,8 +22,8 @@ public class RecommendationController {
 
     @RolesAllowed({"DOCTOR", "FAMILY_DOCTOR" })
     @PostMapping("/add")
-    public ResponseEntity<RecommendationDTO> addRecommendation(@AuthenticationPrincipal Jwt jwt, @RequestBody RecommendationDTO rec){
-        RecommendationDTO recommendation = recommendationService.addRecommendation(jwt, rec);
+    public ResponseEntity<RecommendationDTO> addRecommendation(@AuthenticationPrincipal Jwt jwt,Integer id, @RequestBody RecommendationDTO rec){
+        RecommendationDTO recommendation = recommendationService.addRecommendation(jwt,null, rec);
         return ResponseEntity.ok(recommendation);
     }
     @RolesAllowed({"RECEPTIONIST","DOCTOR", "FAMILY_DOCTOR" })

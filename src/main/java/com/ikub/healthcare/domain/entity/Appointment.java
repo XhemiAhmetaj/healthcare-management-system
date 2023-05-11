@@ -42,8 +42,8 @@ public class Appointment {
     private User createdBy;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "appointment")
-    private List<Recommendation> recommendation;
+    @OneToOne(mappedBy = "appointment")
+    private Recommendation recommendation;
 
     @ToString.Exclude
     @OneToOne(mappedBy = "appointmentDiag")
