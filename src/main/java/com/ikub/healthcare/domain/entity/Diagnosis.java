@@ -27,4 +27,6 @@ public class Diagnosis {
     @JoinColumn(name = "appointment_id", referencedColumnName = "id")
     private Appointment appointmentDiag;
 
+    @OneToOne(mappedBy = "diagnosis")
+    private Prescription prescription;
 }

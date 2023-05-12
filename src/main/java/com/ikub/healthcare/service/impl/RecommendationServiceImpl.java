@@ -29,32 +29,52 @@ public class RecommendationServiceImpl implements RecommendationService {
     @Override
     public RecommendationDTO addRecommendation(Jwt jwt, Integer id, RecommendationDTO recommendationDTO) {
         User u = userService.getUserFromToken(jwt);
-        Recommendation r = recommendationRepository.save(new Recommendation());
-        r.setDescription(recommendationDTO.getDescription());
-        r.setRecommendedBy(u);
-        r.setAppointment(appointmentRepository.findById(id).orElseThrow(()-> new ResourceNotFountException(String
+        Recommendation rec = RecommendationMapper
+                .buildRecommendation(recommendationDTO, u, appointmentRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFountException(String
                 .format("Appointment not found"))));
-        r = recommendationRepository.save(r);
-        return RecommendationMapper.toDTO(r);
+        rec = recommendationRepository.save(rec);
+        return RecommendationMapper.toDTO(rec);
+
+
+//        Recommendation r = recommendationRepository.save(new Recommendation());
+//
+//        r.setDescription(recommendationDTO.getDescription());
+//        r.setRecommendedBy(u);
+//        r.setAppointment(appointmentRepository.findById(id).orElseThrow(()-> new ResourceNotFountException(String
+//                .format("Appointment not found"))));
+//        r = recommendationRepository.save(r);
+//        return RecommendationMapper.toDTO(r);
     }
 
     @Override
     public List<RecommendationDTO> findAllRecommendations() {
-        return recommendationRepository.findAll().stream().map(r-> RecommendationMapper.toDTO(r)).collect(Collectors.toList());
+        return recommendationRepository.findAll()
+                .stream()
+                .map(r-> RecommendationMapper.toDTO(r))
+                .collect(Collectors.toList());
     }
 
     @Override
     public RecommendationDTO findRecommendationById(Integer id) {
-        return recommendationRepository.findById(id).map(r->RecommendationMapper.toDTO(r)).orElseThrow(()->new ResourceNotFountException("Recommendation not found!"));
+        return recommendationRepository.findById(id)
+                .map(r->RecommendationMapper.toDTO(r))
+                .orElseThrow(()->new ResourceNotFountException("Recommendation not found!"));
     }
 
     @Override
     public List<RecommendationDTO> findRecommendationByPatientName(String name) {
-        return recommendationRepository.findRecommendationsByAppointment_UserPatientName(name).stream().map(r->RecommendationMapper.toDTO(r)).collect(Collectors.toList());
+        return recommendationRepository.findRecommendationsByAppointment_UserPatientName(name)
+                .stream()
+                .map(r->RecommendationMapper.toDTO(r))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<RecommendationDTO> findRecommendationByDoctorId(Integer id) {
-        return recommendationRepository.findRecommendationsByRecommendedBy_Id(id).stream().map(r->RecommendationMapper.toDTO(r)).collect(Collectors.toList());
+        return recommendationRepository.findRecommendationsByRecommendedBy_Id(id)
+                .stream()
+                .map(r->RecommendationMapper.toDTO(r))
+                .collect(Collectors.toList());
     }
 }

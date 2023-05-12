@@ -61,10 +61,14 @@ public class User implements UserDetails {
 //    @JsonIgnore
     @OneToMany(mappedBy = "userDoctor")
     private List<Appointment> doctor_appointments;
-
     @JsonIgnore
     @OneToMany(mappedBy = "recommendedBy")
     private List<Recommendation> recommendations;
+    @JsonIgnore
+    @ToString.Exclude
+    @OneToMany(mappedBy = "writtenBy")
+    private List<Prescription> prescriptions;
+
     @CreatedDate
     private LocalDateTime created_at;
     private LocalDateTime modified_at;

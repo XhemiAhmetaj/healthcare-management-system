@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "recommendations")
@@ -25,4 +26,7 @@ public class Recommendation {
     @OneToOne
     @JoinColumn(name = "appointment_id", referencedColumnName = "id")
     private Appointment appointment;
+
+    @OneToMany(mappedBy = "recommendation", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<Result> resultList;
 }

@@ -41,12 +41,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User findById(Integer id) {
         return userRepository.findById(id)
-                .orElseThrow(()->new ResourceNotFountException(String.format("User with id %s not found",id)));
+                .orElseThrow(
+                        ()->new ResourceNotFountException(String.format("User with id %s not found",id)));
     }
 
     @Override
     public List<UserDTO> findAllUsers() {
-        return userRepository.findAll().stream().map(u->UserMapper.toDto(u)).collect(Collectors.toList());
+        return userRepository.findAll()
+                .stream()
+                .map(u->UserMapper.toDto(u))
+                .collect(Collectors.toList());
     }
 
     @Override

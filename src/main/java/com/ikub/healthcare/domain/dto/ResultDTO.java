@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PrescriptionDTO {
+public class ResultDTO {
+
     private Integer id;
-    private String precription;
-    private Integer writtenBy;
-    private Integer diagnosisId;
-
-
+    private String results;
+    private Integer recommendationId;
 }

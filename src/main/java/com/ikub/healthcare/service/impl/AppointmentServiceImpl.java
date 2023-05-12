@@ -29,15 +29,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public AppointmentDTO addAppointment(Jwt jwt, Integer id, AppointmentDTO appointmentDTO) {
         User u = userService.getUserFromToken(jwt);
-        Appointment a = appointmentRepository.save(new Appointment());
-        a.setDescription(appointmentDTO.getDescription());
-        a.setScheduledDate(appointmentDTO.getScheduledDate());
-        a.setCreatedBy(u);
+        Appointment a = AppointmentMapper.createAppointment(appointmentDTO,u);
         if(u.getRole()!= UserRole.PATIENT){
             a.setUserDoctor(userService.findById(appointmentDTO.getDoctorDTO().getId()));
             a.setUserPatient(userService.findById(appointmentDTO.getPatientDTO().getId()));
-            a.setParent(appointmentRepository.findById(id).orElseThrow(()->new ResourceNotFountException("Appointment not found")));
-//            a.setParent(appointmentRepository.findById(appointmentDTO.getParentAppointment().getId()).orElseThrow(()->new ResourceNotFountException("Appointment not found")));
+            a.setParent(appointmentRepository.findById(id)
+                    .orElseThrow(()->new ResourceNotFountException("Appointment not found")));
         }else {
             a.setUserPatient(u);
             a.setUserDoctor(u.getFamilyDoctor());
@@ -48,28 +45,41 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public AppointmentDTO findAppointmentById(Integer id) {
-        return appointmentRepository.findById(id).map(appointment -> AppointmentMapper.toDto(appointment)).orElseThrow(()->new ResourceNotFountException("Appointment not found"));
+        return appointmentRepository.findById(id)
+                .map(appointment -> AppointmentMapper.toDto(appointment))
+                .orElseThrow(()->new ResourceNotFountException("Appointment not found"));
     }
 
     @Override
     public List<AppointmentDTO> findAllAppointment() {
-        return appointmentRepository.findAll().stream().map(a-> AppointmentMapper.toDto(a)).collect(Collectors.toList());
+        return appointmentRepository.findAll()
+                .stream()
+                .map(a-> AppointmentMapper.toDto(a))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<AppointmentDTO> findAppointmentByPatientName(String name) {
         return appointmentRepository.findAllByUserPatient_Name(name)
-                .stream().map(AppointmentMapper::toDto).collect(Collectors.toList());
+                .stream()
+                .map(AppointmentMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<AppointmentDTO> findAllAppointmentByUserPatientId(Integer id) {
-        return appointmentRepository.findAllByUserPatient_Id(id).stream().map(AppointmentMapper::toDto).collect(Collectors.toList());
+        return appointmentRepository.findAllByUserPatient_Id(id)
+                .stream()
+                .map(AppointmentMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<AppointmentDTO> findAllAppointmentsByDoctorId(Integer id) {
-        return appointmentRepository.findAllByUserDoctor_Id(id).stream().map(AppointmentMapper::toDto).collect(Collectors.toList());
+        return appointmentRepository.findAllByUserDoctor_Id(id)
+                .stream()
+                .map(AppointmentMapper::toDto)
+                .collect(Collectors.toList());
     }
 
 

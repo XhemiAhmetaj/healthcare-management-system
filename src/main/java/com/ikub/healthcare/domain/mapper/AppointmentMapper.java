@@ -2,6 +2,7 @@ package com.ikub.healthcare.domain.mapper;
 
 import com.ikub.healthcare.domain.dto.AppointmentDTO;
 import com.ikub.healthcare.domain.entity.Appointment;
+import com.ikub.healthcare.domain.entity.User;
 
 public class AppointmentMapper {
 
@@ -23,6 +24,14 @@ public class AppointmentMapper {
                 .userPatient(dto.getPatientDTO()!=null?UserMapper.toEntity(dto.getPatientDTO()):null)
                 .scheduledDate(dto.getScheduledDate())
                 .build();
+    }
+
+    public static Appointment createAppointment(AppointmentDTO dto, User u){
+        Appointment a = new Appointment();
+        a.setDescription(dto.getDescription());
+        a.setScheduledDate(dto.getScheduledDate());
+        a.setCreatedBy(u);
+        return a;
     }
 
 }

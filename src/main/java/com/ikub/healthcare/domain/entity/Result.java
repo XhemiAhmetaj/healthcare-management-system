@@ -5,26 +5,23 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-
+import java.util.List;
 @Entity
-@Table(name = "prescriptions")
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "results")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class Prescription {
+public class Result {
     @Id
     @GeneratedValue
     private Integer id;
-    private String precription;
+    private String results;
     @ToString.Exclude
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "written_by", referencedColumnName = "id")
-    private User writtenBy;
-    @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "diagnosis_id", referencedColumnName = "id")
-    private Diagnosis diagnosis;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recommandation_id", referencedColumnName = "id")
+    private Recommendation recommendation;
 
 }

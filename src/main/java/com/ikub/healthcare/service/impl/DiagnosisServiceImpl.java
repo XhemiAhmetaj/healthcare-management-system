@@ -26,43 +26,59 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     @Override
     public DiagnosisDTO addDiagnosis(Jwt jwt, Integer appointmentId, DiagnosisDTO diagnosisDTO) {
         User u = userService.getUserFromToken(jwt);
-        Diagnosis d = diagnosisRepository.save(new Diagnosis());
-        d.setDiagnosis(diagnosisDTO.getDiagnosis());
-        d.setWrittenBy(u);
-        d.setAppointmentDiag(appointmentRepository.findById(appointmentId).orElseThrow(()-> new ResourceNotFountException(String
-                .format("Appointment not found"))));
+        Diagnosis d = DiagnosisMapper
+                .createDiagnosis(diagnosisDTO,u,appointmentRepository.findById(appointmentId)
+                        .orElseThrow(()-> new ResourceNotFountException(String
+                                .format("Appointment not found"))));
         d = diagnosisRepository.save(d);
         return DiagnosisMapper.toDto(d);
     }
 
     @Override
     public List<DiagnosisDTO> findAllDiagnosis() {
-        return diagnosisRepository.findAll().stream().map(diagnosis -> DiagnosisMapper.toDto(diagnosis)).collect(Collectors.toList());
+        return diagnosisRepository.findAll()
+                .stream()
+                .map(diagnosis -> DiagnosisMapper.toDto(diagnosis))
+                .collect(Collectors.toList());
     }
 
     @Override
     public DiagnosisDTO findDiagnosisById(Integer id) {
-        return diagnosisRepository.findById(id).map(diagnosis -> DiagnosisMapper.toDto(diagnosis)).orElseThrow(()-> new ResourceNotFountException(String
-                .format("Diagnosis not found")));
+        return diagnosisRepository.findById(id)
+                .map(diagnosis -> DiagnosisMapper.toDto(diagnosis))
+                .orElseThrow(()-> new ResourceNotFountException(String
+                        .format("Diagnosis not found")));
     }
 
     @Override
     public List<DiagnosisDTO> findDiagnosisByPatientId(Integer id) {
-        return diagnosisRepository.findDiagnosesByAppointmentDiag_UserPatient_Id(id).stream().map(diagnosis -> DiagnosisMapper.toDto(diagnosis)).collect(Collectors.toList());
+        return diagnosisRepository.findDiagnosesByAppointmentDiag_UserPatient_Id(id)
+                .stream()
+                .map(diagnosis -> DiagnosisMapper.toDto(diagnosis))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<DiagnosisDTO> findDiagnosisByPatientName(String name) {
-        return diagnosisRepository.findDiagnosesByAppointmentDiag_UserPatient_Name(name).stream().map(diagnosis -> DiagnosisMapper.toDto(diagnosis)).collect(Collectors.toList());
+        return diagnosisRepository.findDiagnosesByAppointmentDiag_UserPatient_Name(name)
+                .stream()
+                .map(diagnosis -> DiagnosisMapper.toDto(diagnosis))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<DiagnosisDTO> findDiagnosisByDoctorId(Integer id) {
-        return diagnosisRepository.findDiagnosesByWrittenBy_Id(id).stream().map(diagnosis -> DiagnosisMapper.toDto(diagnosis)).collect(Collectors.toList());
+        return diagnosisRepository.findDiagnosesByWrittenBy_Id(id)
+                .stream()
+                .map(diagnosis -> DiagnosisMapper.toDto(diagnosis))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<DiagnosisDTO> findDiagnosisByDoctorName(String name) {
-        return diagnosisRepository.findDiagnosesByWrittenBy_Name(name).stream().map(diagnosis -> DiagnosisMapper.toDto(diagnosis)).collect(Collectors.toList());
+        return diagnosisRepository.findDiagnosesByWrittenBy_Name(name)
+                .stream()
+                .map(diagnosis -> DiagnosisMapper.toDto(diagnosis))
+                .collect(Collectors.toList());
     }
 }
