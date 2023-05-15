@@ -18,11 +18,9 @@ public class Recommendation {
     private Integer id;
     private String description;
     @ToString.Exclude
-//    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recommended_by", referencedColumnName = "id")
     private User recommendedBy;
-//    @ToString.Exclude
     @OneToOne
     @JoinColumn(name = "appointment_id", referencedColumnName = "id")
     private Appointment appointment;

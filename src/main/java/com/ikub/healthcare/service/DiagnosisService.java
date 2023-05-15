@@ -10,9 +10,7 @@ public interface DiagnosisService {
     DiagnosisDTO addDiagnosis(Jwt jwt, Integer appointmentId, DiagnosisDTO diagnosisDTO);
     List<DiagnosisDTO> findAllDiagnosis();
     DiagnosisDTO findDiagnosisById(Integer id);
-    List<DiagnosisDTO> findDiagnosisByPatientId(Integer id);
+    List<DiagnosisDTO> findDiagnosisByUserId(Integer id);
     List<DiagnosisDTO> findDiagnosisByPatientName(String name);
-    List<DiagnosisDTO> findDiagnosisByDoctorId(Integer id);
-    List<DiagnosisDTO> findDiagnosisByDoctorName(String name);
 
 }

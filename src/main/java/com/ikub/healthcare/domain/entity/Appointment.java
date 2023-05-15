@@ -37,16 +37,11 @@ public class Appointment {
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Appointment> subAppointments;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime scheduledDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     @JsonFormat(pattern = "HH:mm")
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime time;
-
-//    @OneToOne(mappedBy = "appointmentDateTime")
-//    private ScheduleDateTime scheduleDateTime;
     @ToString.Exclude
     @OneToOne()
     @JoinColumn(name = "created_by", referencedColumnName = "id")

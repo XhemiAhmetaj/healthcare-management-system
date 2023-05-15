@@ -41,20 +41,9 @@ public class DiagnosisController {
     }
 
     @RolesAllowed({"RECEPTIONIST","DOCTOR", "FAMILY_DOCTOR"})
-    @GetMapping("patient/id={id}")
+    @GetMapping("user/id={id}")
     public ResponseEntity<List<DiagnosisDTO>> findDiagnosisByPatientId(@PathVariable Integer id){
-        return ResponseEntity.ok(diagnosisService.findDiagnosisByPatientId(id));
-    }
-    @RolesAllowed({"RECEPTIONIST","DOCTOR", "FAMILY_DOCTOR"})
-    @GetMapping("doctor/name={name}")
-    public ResponseEntity<List<DiagnosisDTO>> findDiagnosisByDoctorName(@PathVariable String name){
-        return ResponseEntity.ok(diagnosisService.findDiagnosisByDoctorName(name));
-    }
-
-    @RolesAllowed({"RECEPTIONIST","DOCTOR", "FAMILY_DOCTOR"})
-    @GetMapping("doctor/id={id}")
-    public ResponseEntity<List<DiagnosisDTO>> findDiagnosisByDoctorId(@PathVariable Integer id){
-        return ResponseEntity.ok(diagnosisService.findDiagnosisByDoctorId(id));
+        return ResponseEntity.ok(diagnosisService.findDiagnosisByUserId(id));
     }
 
     @RolesAllowed({"DOCTOR", "FAMILY_DOCTOR"})

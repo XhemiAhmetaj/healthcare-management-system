@@ -4,7 +4,7 @@ import com.ikub.healthcare.domain.dto.UserDTO;
 import com.ikub.healthcare.domain.entity.User;
 import com.ikub.healthcare.domain.entity.enums.Department;
 import com.ikub.healthcare.domain.entity.enums.UserRole;
-import com.ikub.healthcare.domain.exception.ResourceNotFountException;
+import com.ikub.healthcare.domain.exception.ResourceNotFoundException;
 import com.ikub.healthcare.domain.mapper.UserMapper;
 import com.ikub.healthcare.repository.UserRepository;
 //import com.ikub.healthcare.repository.UserRoleRepository;
@@ -18,7 +18,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -42,14 +41,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User findById(Integer id) {
         return userRepository.findById(id)
                 .orElseThrow(
-                        ()->new ResourceNotFountException(String.format("User with id %s not found",id)));
+                        ()->new ResourceNotFoundException("User not found"));
     }
 
     @Override
     public List<UserDTO> findAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(u->UserMapper.toDto(u))
+                .map(UserMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -86,7 +85,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public List<UserDTO> findUserByRole(String role) {
         return userRepository.findUsersByRole(UserRole.fromValue(role)).stream()
-                .map(u->UserMapper.toDto(u))
+                .map(UserMapper::toDto)
                 .collect(Collectors.toList());
     }
 

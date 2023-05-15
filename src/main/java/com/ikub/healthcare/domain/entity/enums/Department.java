@@ -1,6 +1,6 @@
 package com.ikub.healthcare.domain.entity.enums;
 
-import com.ikub.healthcare.domain.exception.ResourceNotFountException;
+import com.ikub.healthcare.domain.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 
 import java.util.Arrays;
@@ -18,7 +18,7 @@ public enum Department {
         return Arrays.asList(Department.values())
                 .stream().filter(d -> d.value.equals(department))
                 .findFirst()
-                .orElseThrow(()-> new ResourceNotFountException(String
+                .orElseThrow(()-> new ResourceNotFoundException(String
                         .format("Role %s not found",department)));
     }
 

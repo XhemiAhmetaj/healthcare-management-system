@@ -3,20 +3,16 @@ package com.ikub.healthcare.controller;
 import com.ikub.healthcare.domain.dto.AppointmentDTO;
 import com.ikub.healthcare.domain.dto.DiagnosisDTO;
 import com.ikub.healthcare.domain.dto.RecommendationDTO;
-import com.ikub.healthcare.domain.entity.Appointment;
-import com.ikub.healthcare.repository.AppointmentRepository;
 import com.ikub.healthcare.service.AppointmentService;
 import com.ikub.healthcare.service.DiagnosisService;
 import com.ikub.healthcare.service.RecommendationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
-import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,7 +20,6 @@ import java.util.List;
 @RequestMapping("/appointments")
 public class AppointmentController {
     private final AppointmentService appointmentService;
-    private final AppointmentRepository appointmentRepository;
     private final RecommendationService recommendationService;
     private final DiagnosisService diagnosisService;
 
@@ -43,12 +38,6 @@ public class AppointmentController {
     }
 
     @RolesAllowed({"RECEPTIONIST","DOCTOR", "FAMILY_DOCTOR"})
-    @GetMapping("/patient/id/{id}")
-    public ResponseEntity<List<AppointmentDTO>> findAllAppointmentsByPatientId(@PathVariable Integer id){
-        return ResponseEntity.ok(appointmentService.findAllAppointmentByUserPatientId(id));
-    }
-
-    @RolesAllowed({"RECEPTIONIST","DOCTOR", "FAMILY_DOCTOR"})
     @GetMapping("/patient/name/{name}")
     public ResponseEntity<List<AppointmentDTO>> findAppointmentsByPatientName(@PathVariable String name){
         return ResponseEntity.ok(appointmentService.findAppointmentByPatientName(name));
@@ -61,11 +50,10 @@ public class AppointmentController {
     }
 
     @RolesAllowed({"RECEPTIONIST","DOCTOR", "FAMILY_DOCTOR"})
-    @GetMapping("/doctor/id/{id}")
+    @GetMapping("/user/id/{id}")
     public ResponseEntity<List<AppointmentDTO>> findAppointmentByDoctorId(@PathVariable Integer id){
-        return ResponseEntity.ok(appointmentService.findAllAppointmentsByDoctorId(id));
+        return ResponseEntity.ok(appointmentService.findAppointmentsByUserId(id));
     }
-
 
     @RolesAllowed({"RECEPTIONIST","DOCTOR", "FAMILY_DOCTOR"})
     @GetMapping()
@@ -86,8 +74,13 @@ public class AppointmentController {
     }
 
     @GetMapping("/date/{date}")
-    public ResponseEntity<List<Appointment>> list(@PathVariable  String date){
-        return ResponseEntity.ok(appointmentRepository.findAppointmentsByDate(date));
+    public ResponseEntity<List<AppointmentDTO>> list(@PathVariable  String date){
+        return ResponseEntity.ok(appointmentService.findAppointmentsByDate(date));
+    }
+
+    @GetMapping("doctor/{id}/date/{date}")
+    public ResponseEntity<List<AppointmentDTO>> listApp(@PathVariable Integer id, @PathVariable String date){
+        return ResponseEntity.ok(appointmentService.findAppointmentsByDateAndUserDoctorId(date,id));
     }
 
 }

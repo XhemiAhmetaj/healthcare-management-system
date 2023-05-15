@@ -3,7 +3,8 @@ package com.ikub.healthcare.service.impl;
 import com.ikub.healthcare.domain.dto.DiagnosisDTO;
 import com.ikub.healthcare.domain.entity.Diagnosis;
 import com.ikub.healthcare.domain.entity.User;
-import com.ikub.healthcare.domain.exception.ResourceNotFountException;
+import com.ikub.healthcare.domain.entity.enums.UserRole;
+import com.ikub.healthcare.domain.exception.ResourceNotFoundException;
 import com.ikub.healthcare.domain.mapper.DiagnosisMapper;
 import com.ikub.healthcare.repository.AppointmentRepository;
 import com.ikub.healthcare.repository.DiagnosisRepository;
@@ -28,8 +29,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
         User u = userService.getUserFromToken(jwt);
         Diagnosis d = DiagnosisMapper
                 .createDiagnosis(diagnosisDTO,u,appointmentRepository.findById(appointmentId)
-                        .orElseThrow(()-> new ResourceNotFountException(String
-                                .format("Appointment not found"))));
+                        .orElseThrow(()-> new ResourceNotFoundException("Appointment not found")));
         d = diagnosisRepository.save(d);
         return DiagnosisMapper.toDto(d);
     }
@@ -38,47 +38,38 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     public List<DiagnosisDTO> findAllDiagnosis() {
         return diagnosisRepository.findAll()
                 .stream()
-                .map(diagnosis -> DiagnosisMapper.toDto(diagnosis))
+                .map(DiagnosisMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public DiagnosisDTO findDiagnosisById(Integer id) {
         return diagnosisRepository.findById(id)
-                .map(diagnosis -> DiagnosisMapper.toDto(diagnosis))
-                .orElseThrow(()-> new ResourceNotFountException(String
-                        .format("Diagnosis not found")));
+                .map(DiagnosisMapper::toDto)
+                .orElseThrow(()-> new ResourceNotFoundException("Diagnosis not found"));
     }
 
     @Override
-    public List<DiagnosisDTO> findDiagnosisByPatientId(Integer id) {
-        return diagnosisRepository.findDiagnosesByAppointmentDiag_UserPatient_Id(id)
-                .stream()
-                .map(diagnosis -> DiagnosisMapper.toDto(diagnosis))
-                .collect(Collectors.toList());
+    public List<DiagnosisDTO> findDiagnosisByUserId(Integer id) {
+        User u = userService.findById(id);
+        if(u.getRole().equals(UserRole.PATIENT)){
+            return diagnosisRepository.findDiagnosesByAppointmentDiag_UserPatient_Id(id)
+                    .stream()
+                    .map(DiagnosisMapper::toDto)
+                    .collect(Collectors.toList());
+        }else{
+            return diagnosisRepository.findDiagnosesByWrittenBy_Id(id)
+                    .stream()
+                    .map(DiagnosisMapper::toDto)
+                    .collect(Collectors.toList());
+        }
     }
-
     @Override
     public List<DiagnosisDTO> findDiagnosisByPatientName(String name) {
         return diagnosisRepository.findDiagnosesByAppointmentDiag_UserPatient_Name(name)
                 .stream()
-                .map(diagnosis -> DiagnosisMapper.toDto(diagnosis))
+                .map(DiagnosisMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<DiagnosisDTO> findDiagnosisByDoctorId(Integer id) {
-        return diagnosisRepository.findDiagnosesByWrittenBy_Id(id)
-                .stream()
-                .map(diagnosis -> DiagnosisMapper.toDto(diagnosis))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<DiagnosisDTO> findDiagnosisByDoctorName(String name) {
-        return diagnosisRepository.findDiagnosesByWrittenBy_Name(name)
-                .stream()
-                .map(diagnosis -> DiagnosisMapper.toDto(diagnosis))
-                .collect(Collectors.toList());
-    }
 }

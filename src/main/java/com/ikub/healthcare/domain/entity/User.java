@@ -45,20 +45,16 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
     @ToString.Exclude
-//    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family_doctor", referencedColumnName = "id")
     private User familyDoctor;
-//    @ToString.Exclude
-//    @JsonIgnore
+
     @OneToMany(mappedBy = "familyDoctor", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<User> patients;
-//    @ToString.Exclude
-//    @JsonIgnore
+
     @OneToMany(mappedBy = "userPatient")
     private List<Appointment> patient_appointments;
-//    @ToString.Exclude
-//    @JsonIgnore
+
     @OneToMany(mappedBy = "userDoctor")
     private List<Appointment> doctor_appointments;
     @JsonIgnore

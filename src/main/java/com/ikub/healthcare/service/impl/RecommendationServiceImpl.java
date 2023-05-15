@@ -1,16 +1,12 @@
 package com.ikub.healthcare.service.impl;
 
-import com.ikub.healthcare.domain.dto.AppointmentDTO;
 import com.ikub.healthcare.domain.dto.RecommendationDTO;
-import com.ikub.healthcare.domain.entity.Appointment;
 import com.ikub.healthcare.domain.entity.Recommendation;
 import com.ikub.healthcare.domain.entity.User;
-import com.ikub.healthcare.domain.exception.ResourceNotFountException;
-import com.ikub.healthcare.domain.mapper.AppointmentMapper;
+import com.ikub.healthcare.domain.exception.ResourceNotFoundException;
 import com.ikub.healthcare.domain.mapper.RecommendationMapper;
 import com.ikub.healthcare.repository.AppointmentRepository;
 import com.ikub.healthcare.repository.RecommendationRepository;
-import com.ikub.healthcare.service.AppointmentService;
 import com.ikub.healthcare.service.RecommendationService;
 import com.ikub.healthcare.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,42 +27,31 @@ public class RecommendationServiceImpl implements RecommendationService {
         User u = userService.getUserFromToken(jwt);
         Recommendation rec = RecommendationMapper
                 .buildRecommendation(recommendationDTO, u, appointmentRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFountException(String
-                .format("Appointment not found"))));
+                .orElseThrow(()-> new ResourceNotFoundException("Appointment not found")));
         rec = recommendationRepository.save(rec);
         return RecommendationMapper.toDTO(rec);
-
-
-//        Recommendation r = recommendationRepository.save(new Recommendation());
-//
-//        r.setDescription(recommendationDTO.getDescription());
-//        r.setRecommendedBy(u);
-//        r.setAppointment(appointmentRepository.findById(id).orElseThrow(()-> new ResourceNotFountException(String
-//                .format("Appointment not found"))));
-//        r = recommendationRepository.save(r);
-//        return RecommendationMapper.toDTO(r);
     }
 
     @Override
     public List<RecommendationDTO> findAllRecommendations() {
         return recommendationRepository.findAll()
                 .stream()
-                .map(r-> RecommendationMapper.toDTO(r))
+                .map(RecommendationMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public RecommendationDTO findRecommendationById(Integer id) {
         return recommendationRepository.findById(id)
-                .map(r->RecommendationMapper.toDTO(r))
-                .orElseThrow(()->new ResourceNotFountException("Recommendation not found!"));
+                .map(RecommendationMapper::toDTO)
+                .orElseThrow(()->new ResourceNotFoundException("Recommendation not found!"));
     }
 
     @Override
     public List<RecommendationDTO> findRecommendationByPatientName(String name) {
         return recommendationRepository.findRecommendationsByAppointment_UserPatientName(name)
                 .stream()
-                .map(r->RecommendationMapper.toDTO(r))
+                .map(RecommendationMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -74,7 +59,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     public List<RecommendationDTO> findRecommendationByDoctorId(Integer id) {
         return recommendationRepository.findRecommendationsByRecommendedBy_Id(id)
                 .stream()
-                .map(r->RecommendationMapper.toDTO(r))
+                .map(RecommendationMapper::toDTO)
                 .collect(Collectors.toList());
     }
 }

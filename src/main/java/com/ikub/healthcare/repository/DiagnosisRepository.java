@@ -12,5 +12,4 @@ public interface DiagnosisRepository extends JpaRepository<Diagnosis,Integer> {
     List<Diagnosis> findDiagnosesByAppointmentDiag_UserPatient_Id(Integer id);
     List<Diagnosis> findDiagnosesByAppointmentDiag_UserPatient_Name(String name);
     List<Diagnosis> findDiagnosesByWrittenBy_Id(Integer id);
-    List<Diagnosis> findDiagnosesByWrittenBy_Name(String name);
 }

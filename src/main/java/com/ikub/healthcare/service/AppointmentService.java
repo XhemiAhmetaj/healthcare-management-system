@@ -5,6 +5,7 @@ import com.ikub.healthcare.domain.entity.Appointment;
 import com.ikub.healthcare.domain.entity.User;
 import org.springframework.security.oauth2.jwt.Jwt;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface AppointmentService {
@@ -13,8 +14,8 @@ public interface AppointmentService {
     List<AppointmentDTO> findAllAppointment();
     List<AppointmentDTO> findAppointmentByPatientName(String name);
     AppointmentDTO addAppointment(Jwt jwt, Integer id, AppointmentDTO appointmentDTO);
-    List<AppointmentDTO> findAllAppointmentByUserPatientId(Integer id);
-
-    List<AppointmentDTO> findAllAppointmentsByDoctorId(Integer id);
+    List<AppointmentDTO> findAppointmentsByDate(String date);
+    List<AppointmentDTO> findAppointmentsByUserId(Integer id);
+    List<AppointmentDTO> findAppointmentsByDateAndUserDoctorId(String date, Integer id);
 
 }

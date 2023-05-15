@@ -4,7 +4,7 @@ import com.ikub.healthcare.domain.dto.PrescriptionDTO;
 import com.ikub.healthcare.domain.entity.Prescription;
 import com.ikub.healthcare.domain.entity.User;
 import com.ikub.healthcare.domain.entity.enums.UserRole;
-import com.ikub.healthcare.domain.exception.ResourceNotFountException;
+import com.ikub.healthcare.domain.exception.ResourceNotFoundException;
 import com.ikub.healthcare.domain.mapper.PrescriptionMapper;
 import com.ikub.healthcare.repository.DiagnosisRepository;
 import com.ikub.healthcare.repository.PrescriptionRepository;
@@ -30,8 +30,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         User u = userService.getUserFromToken(jwt);
         Prescription p = PrescriptionMapper
                 .toEntityPrescription(prescriptionDTO,u, diagnosisRepository.findById(id)
-                        .orElseThrow(()-> new ResourceNotFountException(String
-                                .format("Diagnosis not found"))));
+                        .orElseThrow(()-> new ResourceNotFoundException("Diagnosis not found")));
         p = prescriptionRepository.save(p);
         return PrescriptionMapper.toDto(p);
     }
@@ -40,16 +39,15 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     public List<PrescriptionDTO> findAllPrecriptions() {
         return prescriptionRepository.findAll()
                 .stream()
-                .map(prescription -> PrescriptionMapper.toDto(prescription))
+                .map(PrescriptionMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public PrescriptionDTO findPrecriptionById(Integer id) {
         return prescriptionRepository.findById(id)
-                .map(prescription -> PrescriptionMapper.toDto(prescription))
-                .orElseThrow(()-> new ResourceNotFountException(String
-                    .format("Prescription not found")));
+                .map(PrescriptionMapper::toDto)
+                .orElseThrow(()-> new ResourceNotFoundException("Prescription not found"));
     }
 
     @Override
@@ -58,12 +56,12 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         if(u.getRole()== UserRole.PATIENT){
             return prescriptionRepository.findPrescriptionsByDiagnosis_AppointmentDiag_UserPatient_Id(id)
                     .stream()
-                    .map(prescription -> PrescriptionMapper.toDto(prescription))
+                    .map(PrescriptionMapper::toDto)
                     .collect(Collectors.toList());
         }else {
             return prescriptionRepository.findPrescriptionsByWrittenBy_Id(id)
                     .stream()
-                    .map(prescription -> PrescriptionMapper.toDto(prescription))
+                    .map(PrescriptionMapper::toDto)
                     .collect(Collectors.toList());
         }
     }

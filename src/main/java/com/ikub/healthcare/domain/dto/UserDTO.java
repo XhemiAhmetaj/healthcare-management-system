@@ -2,10 +2,13 @@ package com.ikub.healthcare.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.management.relation.Role;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ikub.healthcare.domain.entity.User;
+import com.ikub.healthcare.domain.entity.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

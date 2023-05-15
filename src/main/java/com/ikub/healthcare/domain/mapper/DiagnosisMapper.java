@@ -1,11 +1,9 @@
 package com.ikub.healthcare.domain.mapper;
 
 import com.ikub.healthcare.domain.dto.DiagnosisDTO;
-import com.ikub.healthcare.domain.dto.UserDTO;
 import com.ikub.healthcare.domain.entity.Appointment;
 import com.ikub.healthcare.domain.entity.Diagnosis;
 import com.ikub.healthcare.domain.entity.User;
-import com.ikub.healthcare.service.DiagnosisService;
 
 public class DiagnosisMapper {
 
@@ -15,7 +13,6 @@ public class DiagnosisMapper {
                 .diagnosis(d.getDiagnosis())
                 .writtenBy(d.getAppointmentDiag().getUserDoctor().getId())
                 .appointmentDTO(AppointmentMapper.toDto(d.getAppointmentDiag()))
-//                .appointmentId(d.getAppointmentDiag().getId())
                 .build();
     }
 

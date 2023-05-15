@@ -6,13 +6,27 @@ import org.springframework.http.HttpStatus;
 import java.util.Date;
 @Data
 public class ExceptionResponse {
-    private HttpStatus status;
     private Object message;
     private Date timestamp;
 
-    public ExceptionResponse(HttpStatus status, Object message) {
-        this.status = status;
+    public ExceptionResponse(Object message) {
         this.message = message;
         this.timestamp = new Date();
+    }
+
+    public Object getMessage() {
+        return message;
+    }
+
+    public void setMessage(Object message) {
+        this.message = message;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 }
