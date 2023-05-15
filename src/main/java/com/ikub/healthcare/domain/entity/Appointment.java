@@ -3,9 +3,12 @@ package com.ikub.healthcare.domain.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -36,6 +39,14 @@ public class Appointment {
     private List<Appointment> subAppointments;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime scheduledDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
+    @JsonFormat(pattern = "HH:mm")
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime time;
+
+//    @OneToOne(mappedBy = "appointmentDateTime")
+//    private ScheduleDateTime scheduleDateTime;
     @ToString.Exclude
     @OneToOne()
     @JoinColumn(name = "created_by", referencedColumnName = "id")

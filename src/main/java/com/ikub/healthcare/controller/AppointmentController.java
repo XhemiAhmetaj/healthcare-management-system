@@ -3,16 +3,20 @@ package com.ikub.healthcare.controller;
 import com.ikub.healthcare.domain.dto.AppointmentDTO;
 import com.ikub.healthcare.domain.dto.DiagnosisDTO;
 import com.ikub.healthcare.domain.dto.RecommendationDTO;
+import com.ikub.healthcare.domain.entity.Appointment;
+import com.ikub.healthcare.repository.AppointmentRepository;
 import com.ikub.healthcare.service.AppointmentService;
 import com.ikub.healthcare.service.DiagnosisService;
 import com.ikub.healthcare.service.RecommendationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,6 +24,7 @@ import java.util.List;
 @RequestMapping("/appointments")
 public class AppointmentController {
     private final AppointmentService appointmentService;
+    private final AppointmentRepository appointmentRepository;
     private final RecommendationService recommendationService;
     private final DiagnosisService diagnosisService;
 
@@ -78,6 +83,11 @@ public class AppointmentController {
     @PostMapping("/{id}/diagnosis/add")
     public ResponseEntity<DiagnosisDTO> addDiagnosis(@AuthenticationPrincipal Jwt jwt, @PathVariable Integer id, @RequestBody DiagnosisDTO diagnosis){
         return ResponseEntity.ok(diagnosisService.addDiagnosis(jwt,id,diagnosis));
+    }
+
+    @GetMapping("/date/{date}")
+    public ResponseEntity<List<Appointment>> list(@PathVariable  String date){
+        return ResponseEntity.ok(appointmentRepository.findAppointmentsByDate(date));
     }
 
 }

@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     public AppointmentDTO addAppointment(Jwt jwt, Integer id, AppointmentDTO appointmentDTO) {
         User u = userService.getUserFromToken(jwt);
         Appointment a = AppointmentMapper.createAppointment(appointmentDTO,u);
+
+        if(appointmentDTO.getScheduledDate().getDayOfWeek().equals(DayOfWeek.SATURDAY) || appointmentDTO.getScheduledDate().getDayOfWeek().equals(DayOfWeek.SUNDAY)){
+            throw new RuntimeException(String.format("No work on weekends! Please schedule another day."));
+        }
+
         if(u.getRole()!= UserRole.PATIENT){
             a.setUserDoctor(userService.findById(appointmentDTO.getDoctorDTO().getId()));
             a.setUserPatient(userService.findById(appointmentDTO.getPatientDTO().getId()));
@@ -39,6 +45,17 @@ public class AppointmentServiceImpl implements AppointmentService {
             a.setUserPatient(u);
             a.setUserDoctor(u.getFamilyDoctor());
         }
+
+        //shtim kodi
+        List<Appointment> list = appointmentRepository.findAllByDateAndAndUserDoctor_Id(a.getUserDoctor().getId(), appointmentDTO.getScheduledDate().toLocalDate());
+        System.err.println("Snuk");
+            if(list.stream().anyMatch(ap -> ap.equals(appointmentDTO.getScheduledDate().toLocalTime()))){
+                throw new RuntimeException(String.format("Not available! Please schedule another time."));
+            }else {
+                a.setTime(appointmentDTO.getScheduledDate().toLocalTime());
+            }
+//        }
+
         a = appointmentRepository.save(a);
         return AppointmentMapper.toDto(a);
     }
@@ -81,6 +98,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .map(AppointmentMapper::toDto)
                 .collect(Collectors.toList());
     }
+
 
 
 }
