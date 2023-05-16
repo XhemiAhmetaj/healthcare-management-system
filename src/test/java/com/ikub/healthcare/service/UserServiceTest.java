@@ -37,25 +37,6 @@ public class UserServiceTest extends BaseTest {
     private PasswordEncoder encoder;
     private User user;
 
-    @BeforeEach
-    public void setupUserTest(){
-         user = User.builder()
-                .id(1)
-                .name("Test")
-                .lastname("TestLastName")
-                .email("test@gmail.com")
-                .password("test1234")
-                .role(UserRole.PATIENT)
-                .department(Department.NULL)
-                .address("Komuna e Parisit")
-                .birthday(LocalDate.of(1997,10,22))
-                .phoneNumber("069")
-                .personalNumber("Jxxx")
-                .created_at(LocalDateTime.now())
-                .modified_at(LocalDateTime.now())
-                .build();
-
-    }
     @Test
     public void test_findUserById_ok(){
         Mockito.doReturn(Optional.of(new User())).when(userRepository).findById(Mockito.anyInt());
