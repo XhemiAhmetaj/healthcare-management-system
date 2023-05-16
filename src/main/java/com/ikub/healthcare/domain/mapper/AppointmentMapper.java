@@ -35,5 +35,4 @@ public class AppointmentMapper {
         return a;
     }
 
-
 }

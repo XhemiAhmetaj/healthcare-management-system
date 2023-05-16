@@ -8,6 +8,7 @@ import java.util.List;
 public interface ResultService {
 
     ResultDTO addResult(ResultDTO resultDTO, Integer id);
+    ResultDTO findById(Integer id);
     List<ResultDTO> findResults();
     List<ResultDTO> findResultsByRecommendationId(Integer id);
 

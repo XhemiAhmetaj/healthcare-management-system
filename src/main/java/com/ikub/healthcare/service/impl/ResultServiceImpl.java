@@ -2,6 +2,7 @@ package com.ikub.healthcare.service.impl;
 
 import com.ikub.healthcare.domain.dto.ResultDTO;
 import com.ikub.healthcare.domain.entity.Result;
+import com.ikub.healthcare.domain.exception.BadRequestException;
 import com.ikub.healthcare.domain.exception.ResourceNotFoundException;
 import com.ikub.healthcare.domain.mapper.ResultMapper;
 import com.ikub.healthcare.repository.RecommendationRepository;
@@ -23,9 +24,16 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public ResultDTO addResult(ResultDTO resultDTO, Integer id) {
         Result r = ResultMapper.toEntityResult(resultDTO,recommendationRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Recommendation not found")));
+                .orElseThrow(()-> new BadRequestException("Recommendation not found")));
         r = resultRepository.save(r);
         return ResultMapper.toDto(r);
+    }
+
+    @Override
+    public ResultDTO findById(Integer id) {
+        return resultRepository.findById(id)
+                .map(ResultMapper::toDto)
+                .orElseThrow(()-> new BadRequestException("Result not found"));
     }
 
     @Override

@@ -1,10 +1,12 @@
 package com.ikub.healthcare.repository;
 
 import com.ikub.healthcare.domain.entity.Appointment;
+import net.bytebuddy.asm.Advice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
